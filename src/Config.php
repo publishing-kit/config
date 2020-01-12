@@ -89,7 +89,11 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         return Yaml::parseFile($path);
     }
 
-    public function __get(string $name)
+    /**
+     * @param string $name
+     * @return string|null|Config
+     */
+    public function get(string $name)
     {
         if (!isset($this->config[$name])) {
             return null;
@@ -98,6 +102,11 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
             return new static($this->config[$name]);
         }
         return $this->config[$name];
+    }
+
+    public function __get(string $name)
+    {
+        return $this->get($name);
     }
 
     /**
