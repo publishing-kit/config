@@ -30,8 +30,13 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         if (!file_exists($path)) {
             throw new ConfigDoesNotExist();
         }
-        $config = include $path;
+        $config = self::parseArrayFile($path);
         return new static($config);
+    }
+
+    private static function parseArrayFile(string $path): array
+    {
+        return include $path;
     }
 
     public function __get(string $name)
