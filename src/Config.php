@@ -29,32 +29,46 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         $this->config = $config;
     }
 
-    public static function fromFile(string $path)
+    public static function fromFile(string $path): self
+    {
+        return new static(self::getFile($path));
+    }
+
+    public static function fromFiles(array $files): self
+    {
+        $configs = [];
+        foreach ($files as $file) {
+            $configs = array_merge($configs, self::getFile($file));
+        }
+        return new static($configs);
+    }
+
+    private static function getFile(string $path): array
     {
         if (!file_exists($path)) {
             throw new ConfigDoesNotExist();
         }
         try {
             switch (pathinfo($path)['extension']) {
-                case 'php':
-                    $config = self::parseArrayFile($path);
-                    break;
-                case 'ini':
-                    $config = self::parseIniFile($path);
-                    break;
-                case 'yml':
-                case 'yaml':
-                    $config = self::parseYamlFile($path);
-                    break;
-                default:
-                    throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
+            case 'php':
+                $config = self::parseArrayFile($path);
+                break;
+            case 'ini':
+                $config = self::parseIniFile($path);
+                break;
+            case 'yml':
+            case 'yaml':
+                $config = self::parseYamlFile($path);
+                break;
+            default:
+                throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
             }
         } catch (UnsupportedConfigFileType $e) {
             throw $e;
         } catch (\Exception $e) {
             throw new ConfigCouldNotBeParsed('File ' . $path . ' could not be parsed');
         }
-        return new static($config);
+        return $config;
     }
 
     private static function parseArrayFile(string $path): array

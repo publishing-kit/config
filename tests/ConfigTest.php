@@ -108,4 +108,17 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals('filesystem', $item->cache->driver);
         $this->assertEquals('cache/data', $item->cache->path);
     }
+
+    public function testGetConfigFromMultipleFiles()
+    {
+        $item = Config::fromFiles([
+            'tests/config.yml',
+            'tests/config.ini',
+            'tests/config.php',
+        ]);
+        $this->assertEquals('bar', $item->foo);
+        $this->assertEquals('bar', $item->values->foo);
+        $this->assertEquals('filesystem', $item->cache->driver);
+        $this->assertEquals('cache/data', $item->cache->path);
+    }
 }
