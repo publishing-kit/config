@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PublishingKit\Config;
 
-class Config
+use Countable;
+
+class Config implements Countable
 {
     /**
      * @var array
@@ -19,5 +21,13 @@ class Config
     public function __get(string $name)
     {
         return $this->config[$name] ?? null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count()
+    {
+        return count($this->config);
     }
 }

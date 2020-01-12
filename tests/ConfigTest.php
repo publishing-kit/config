@@ -22,4 +22,14 @@ class ConfigTest extends SimpleTestCase
         $item = new Config([]);
         $this->assertNull($item->foo);
     }
+
+    public function testImplementsCountable()
+    {
+        $config = [
+            'foo' => 'bar'
+        ];
+        $item = new Config($config);
+        $this->assertInstanceOf('Countable', $item);
+        $this->assertCount(1, $item);
+    }
 }
