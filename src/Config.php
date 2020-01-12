@@ -8,7 +8,9 @@ use Countable;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
+use PublishingKit\Config\Exceptions\ConfigCouldNotBeParsed;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
+use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
 
 /**
  * @psalm-immutable
@@ -30,7 +32,17 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         if (!file_exists($path)) {
             throw new ConfigDoesNotExist();
         }
-        $config = self::parseArrayFile($path);
+        try {
+            switch (pathinfo($path)['extension']) {
+                case 'php':
+                    $config = self::parseArrayFile($path);
+                    break;
+                default:
+                    throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
+            }
+        } catch (\Exception $e) {
+            throw new ConfigCouldNotBeParsed('File ' . $path . ' could not be parsed');
+        }
         return new static($config);
     }
 
