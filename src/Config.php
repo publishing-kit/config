@@ -11,6 +11,8 @@ use IteratorAggregate;
 use PublishingKit\Config\Exceptions\ConfigCouldNotBeParsed;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * @psalm-immutable
@@ -40,6 +42,10 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
                 case 'ini':
                     $config = self::parseIniFile($path);
                     break;
+                case 'yml':
+                case 'yaml':
+                    $config = self::parseYamlFile($path);
+                    break;
                 default:
                     throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
             }
@@ -59,6 +65,11 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
     private static function parseIniFile(string $path): array
     {
         return parse_ini_file($path, true);
+    }
+
+    private static function parseYamlFile(string $path): array
+    {
+        return Yaml::parseFile($path);
     }
 
     public function __get(string $name)

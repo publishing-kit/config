@@ -101,4 +101,11 @@ class ConfigTest extends SimpleTestCase
         $item = Config::fromFile('tests/config.ini');
         $this->assertEquals('bar', $item->values->foo);
     }
+
+    public function testGetConfigFromYamlFile()
+    {
+        $item = Config::fromFile('tests/config.yml');
+        $this->assertEquals('filesystem', $item->cache->driver);
+        $this->assertEquals('cache/data', $item->cache->path);
+    }
 }
