@@ -44,6 +44,11 @@ final class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigC
         return new static($configs);
     }
 
+    public static function __set_state(array $config): ConfigContainer
+    {
+        return new static($config);
+    }
+
     private static function getFile(string $path): array
     {
         if (!file_exists($path)) {
