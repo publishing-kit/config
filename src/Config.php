@@ -109,6 +109,11 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         return $this->get($name);
     }
 
+    public function has(string $name): bool
+    {
+        return isset($this->config[$name]);
+    }
+
     /**
      * {@inheritDoc}
      */

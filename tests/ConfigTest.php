@@ -67,7 +67,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals('baz', $item->foo->bar);
     }
 
-    public function testGetter()
+    public function testGet()
     {
         $config = [
             'foo' => [
@@ -77,6 +77,19 @@ class ConfigTest extends SimpleTestCase
         $item = new Config($config);
         $this->assertInstanceOf(Config::class, $item->get('foo'));
         $this->assertEquals('baz', $item->get('foo')->get('bar'));
+    }
+
+    public function testHas()
+    {
+        $config = [
+            'foo' => [
+                'bar' => 'baz'
+            ]
+        ];
+        $item = new Config($config);
+        $this->assertTrue($item->has('foo'));
+        $this->assertTrue($item->get('foo')->has('bar'));
+        $this->assertFalse($item->get('foo')->has('baz'));
     }
 
     public function testConvertToArray()
