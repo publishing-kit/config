@@ -7,25 +7,11 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-**Note:** Replace ```Matthew Daly``` ```matthewbdaly``` ```https://matthewdaly.co.uk``` ```450801+matthewbdaly@users.noreply.github.com``` ```publishing-kit``` ```config``` ```PHP configuration manager package``` with their correct values in [README.md](README.md), [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](CONTRIBUTING.md), [LICENSE.md](LICENSE.md) and [composer.json](composer.json) files, then delete this line. You can run `$ php prefill.php` in the command line to make all replacements at once. Delete the file prefill.php as well.
+PublishingKit/Config is a simple config container. It can parse the following formats:
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
-
-## Structure
-
-If any of the following are applicable to your project, then the directory structure should follow industry best practices by being named the following.
-
-```
-bin/        
-build/
-docs/
-config/
-src/
-tests/
-vendor/
-```
-
+* PHP files (useful for dynamic stuff that can change based on the environment)
+* `ini` files
+* YAML files
 
 ## Install
 
@@ -37,10 +23,38 @@ $ composer require publishing-kit/config
 
 ## Usage
 
+You can simply pass in an array for the configuration:
+
 ``` php
-$skeleton = new PublishingKit\Config();
-echo $skeleton->echoPhrase('Hello, League!');
+$values = [
+    'foo' => 'bar'
+];
+$config = new PublishingKit\Config\Config($values);
+echo $config->get('foo'); // returns 'bar'
 ```
+
+However, in practice you're unlikely to do this. Instead, you will normally use the named constructors to create the config from a file:
+
+```php
+$config = PublishingKit\Config\Config::fromFile('config.php');
+$multiConfig = PublishingKit\Config\Config::fromFiles([
+    'config.php',
+    'config.ini',
+    'config.yml'
+]);
+```
+
+Once you have a config object, you can check for existence with the `has()` method, and get the value with the `get()` method, or as a property:
+
+```php
+$config->has('foo'); // returns true
+$config->get('foo'); // returns 'bar'
+$config->foo; // returns 'bar'
+```
+
+Since the config object implements `ArrayAccess` and `IteratorAggregate`, you can also loop over them or access properties using array notation.
+
+Config objects are immutable and so cannot be changed once created.
 
 ## Change log
 
