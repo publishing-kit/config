@@ -141,7 +141,13 @@ class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContain
      */
     public function offsetGet($offset)
     {
-        return isset($this->config[$offset]) ? $this->config[$offset] : null;
+        if (!isset($this->config[$offset])) {
+            return null;
+        }
+        if (is_array($this->config[$offset])) {
+            return new static($this->config[$offset]);
+        }
+        return $this->config[$offset];
     }
 
     /**
