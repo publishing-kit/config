@@ -78,13 +78,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals($config, $item->toArray());
     }
 
-    public function testGetConfigFromPhpFile()
-    {
-        $item = Config::fromFile('tests/config.php');
-        $this->assertEquals('bar', $item->foo);
-    }
-
-    public function testGetNonExistentConfigFromPhpFile()
+    public function testGetConfigFromNonExistentFile()
     {
         $this->expectException(ConfigDoesNotExist::class);
         $item = Config::fromFile('tests/no-config.php');
@@ -94,6 +88,12 @@ class ConfigTest extends SimpleTestCase
     {
         $this->expectException(UnsupportedConfigFileType::class);
         $item = Config::fromFile('tests/config.wibble');
+    }
+
+    public function testGetConfigFromPhpFile()
+    {
+        $item = Config::fromFile('tests/config.php');
+        $this->assertEquals('bar', $item->foo);
     }
 
     public function testGetConfigFromIniFile()
