@@ -32,4 +32,14 @@ class ConfigTest extends SimpleTestCase
         $this->assertInstanceOf('Countable', $item);
         $this->assertCount(1, $item);
     }
+
+    public function testImplementsArrayAccess()
+    {
+        $config = [
+            'foo' => 'bar'
+        ];
+        $item = new Config($config);
+        $this->assertInstanceOf('ArrayAccess', $item);
+        $this->assertEquals('bar', $item['foo']);
+    }
 }

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace PublishingKit\Config;
 
 use Countable;
+use ArrayAccess;
 
-class Config implements Countable
+class Config implements ArrayAccess, Countable
 {
     /**
      * @var array
@@ -29,5 +30,41 @@ class Config implements Countable
     public function count()
     {
         return count($this->config);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->config[$offset]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->config[$offset]) ? $this->config[$offset] : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->config[] = $value;
+            return;
+        }
+        $this->config[$offset] = $value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->config[$offset]);
     }
 }
