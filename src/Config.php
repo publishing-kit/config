@@ -18,7 +18,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
 /**
  * @psalm-immutable
  */
-class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContainer
+final class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContainer
 {
     /**
      * @var array
