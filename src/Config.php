@@ -9,6 +9,9 @@ use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
 
+/**
+ * @psalm-immutable
+ */
 class Config implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
@@ -61,11 +64,6 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
-            $this->config[] = $value;
-            return;
-        }
-        $this->config[$offset] = $value;
     }
 
     /**
@@ -73,7 +71,6 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
      */
     public function offsetUnset($offset)
     {
-        unset($this->config[$offset]);
     }
 
     /**
