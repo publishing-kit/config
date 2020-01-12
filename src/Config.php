@@ -73,6 +73,9 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
 
     private static function parseArrayFile(string $path): array
     {
+        if (!file_exists($path)) {
+            return [];
+        }
         return include $path;
     }
 
