@@ -40,6 +40,8 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
                 default:
                     throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
             }
+        } catch (UnsupportedConfigFileType $e) {
+            throw $e;
         } catch (\Exception $e) {
             throw new ConfigCouldNotBeParsed('File ' . $path . ' could not be parsed');
         }

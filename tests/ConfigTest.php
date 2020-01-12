@@ -6,6 +6,7 @@ namespace Tests;
 
 use PublishingKit\Config\Config;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
+use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
 
 class ConfigTest extends SimpleTestCase
 {
@@ -76,5 +77,11 @@ class ConfigTest extends SimpleTestCase
     {
         $this->expectException(ConfigDoesNotExist::class);
         $item = Config::fromFile('tests/no-config.php');
+    }
+
+    public function testGetConfigFromUnsupportedSource()
+    {
+        $this->expectException(UnsupportedConfigFileType::class);
+        $item = Config::fromFile('tests/config.wibble');
     }
 }
