@@ -8,6 +8,7 @@ use Countable;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
+use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 
 /**
  * @psalm-immutable
@@ -22,6 +23,15 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
     public function __construct(array $config)
     {
         $this->config = $config;
+    }
+
+    public static function fromFile(string $path)
+    {
+        if (!file_exists($path)) {
+            throw new ConfigDoesNotExist();
+        }
+        $config = include $path;
+        return new static($config);
     }
 
     public function __get(string $name)

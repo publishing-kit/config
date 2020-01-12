@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use PublishingKit\Config\Config;
+use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 
 class ConfigTest extends SimpleTestCase
 {
@@ -63,5 +64,17 @@ class ConfigTest extends SimpleTestCase
         $item = new Config($config);
         $this->assertInstanceOf(Config::class, $item->foo);
         $this->assertEquals('baz', $item->foo->bar);
+    }
+
+    public function testGetConfigFromPhpFile()
+    {
+        $item = Config::fromFile('tests/config.php');
+        $this->assertEquals('bar', $item->foo);
+    }
+
+    public function testGetNonExistentConfigFromPhpFile()
+    {
+        $this->expectException(ConfigDoesNotExist::class);
+        $item = Config::fromFile('tests/no-config.php');
     }
 }
