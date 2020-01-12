@@ -8,21 +8,6 @@ use PublishingKit\Config\Config;
 
 class ConfigTest extends SimpleTestCase
 {
-    public function testGetSetValue()
-    {
-        $config = [
-            'foo' => 'bar'
-        ];
-        $item = new Config($config);
-        $this->assertEquals('bar', $item->foo);
-    }
-    
-    public function testGetUnsetValue()
-    {
-        $item = new Config([]);
-        $this->assertNull($item->foo);
-    }
-
     public function testImplementsCountable()
     {
         $config = [
@@ -51,5 +36,32 @@ class ConfigTest extends SimpleTestCase
         $item = new Config($config);
         $this->assertInstanceOf('IteratorAggregate', $item);
         $this->assertInstanceOf('ArrayIterator', $item->getIterator());
+    }
+
+    public function testGetSetValue()
+    {
+        $config = [
+            'foo' => 'bar'
+        ];
+        $item = new Config($config);
+        $this->assertEquals('bar', $item->foo);
+    }
+    
+    public function testGetUnsetValue()
+    {
+        $item = new Config([]);
+        $this->assertNull($item->foo);
+    }
+
+    public function testGetArrayValue()
+    {
+        $config = [
+            'foo' => [
+                'bar' => 'baz'
+            ]
+        ];
+        $item = new Config($config);
+        $this->assertInstanceOf(Config::class, $item->foo);
+        $this->assertEquals('baz', $item->foo->bar);
     }
 }

@@ -23,7 +23,13 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
 
     public function __get(string $name)
     {
-        return $this->config[$name] ?? null;
+        if (!isset($this->config[$name])) {
+            return null;
+        }
+        if (is_array($this->config[$name])) {
+            return new static($this->config[$name]);
+        }
+        return $this->config[$name];
     }
 
     /**
