@@ -50,18 +50,18 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         }
         try {
             switch (pathinfo($path)['extension']) {
-            case 'php':
-                $config = self::parseArrayFile($path);
-                break;
-            case 'ini':
-                $config = self::parseIniFile($path);
-                break;
-            case 'yml':
-            case 'yaml':
-                $config = self::parseYamlFile($path);
-                break;
-            default:
-                throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
+                case 'php':
+                    $config = self::parseArrayFile($path);
+                    break;
+                case 'ini':
+                    $config = self::parseIniFile($path);
+                    break;
+                case 'yml':
+                case 'yaml':
+                    $config = self::parseYamlFile($path);
+                    break;
+                default:
+                    throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
             }
         } catch (UnsupportedConfigFileType $e) {
             throw $e;
