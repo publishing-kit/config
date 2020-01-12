@@ -84,4 +84,10 @@ class ConfigTest extends SimpleTestCase
         $this->expectException(UnsupportedConfigFileType::class);
         $item = Config::fromFile('tests/config.wibble');
     }
+
+    public function testGetConfigFromIniFile()
+    {
+        $item = Config::fromFile('tests/config.ini');
+        $this->assertEquals('bar', $item->values->foo);
+    }
 }

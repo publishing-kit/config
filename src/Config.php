@@ -37,6 +37,9 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
                 case 'php':
                     $config = self::parseArrayFile($path);
                     break;
+                case 'ini':
+                    $config = self::parseIniFile($path);
+                    break;
                 default:
                     throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
             }
@@ -51,6 +54,11 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
     private static function parseArrayFile(string $path): array
     {
         return include $path;
+    }
+
+    private static function parseIniFile(string $path): array
+    {
+        return parse_ini_file($path, true);
     }
 
     public function __get(string $name)
@@ -108,5 +116,10 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
     public function getIterator()
     {
         return new ArrayIterator($this->config);
+    }
+
+    public function toArray(): array
+    {
+        return $this->config;
     }
 }
