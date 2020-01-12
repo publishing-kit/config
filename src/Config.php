@@ -6,8 +6,10 @@ namespace PublishingKit\Config;
 
 use Countable;
 use ArrayAccess;
+use ArrayIterator;
+use IteratorAggregate;
 
-class Config implements ArrayAccess, Countable
+class Config implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * @var array
@@ -66,5 +68,13 @@ class Config implements ArrayAccess, Countable
     public function offsetUnset($offset)
     {
         unset($this->config[$offset]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->config);
     }
 }
