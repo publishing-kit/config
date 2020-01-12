@@ -11,13 +11,14 @@ use IteratorAggregate;
 use PublishingKit\Config\Exceptions\ConfigCouldNotBeParsed;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
+use PublishingKit\Config\Contracts\ConfigContainer;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * @psalm-immutable
  */
-class Config implements ArrayAccess, Countable, IteratorAggregate
+class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContainer
 {
     /**
      * @var array
@@ -29,12 +30,12 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         $this->config = $config;
     }
 
-    public static function fromFile(string $path): self
+    public static function fromFile(string $path): ConfigContainer
     {
         return new static(self::getFile($path));
     }
 
-    public static function fromFiles(array $files): self
+    public static function fromFiles(array $files): ConfigContainer
     {
         $configs = [];
         foreach ($files as $file) {
