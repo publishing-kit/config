@@ -6,8 +6,7 @@ namespace PublishingKit\Config;
 
 use Countable;
 use ArrayAccess;
-use ArrayIterator;
-use IteratorAggregate;
+use Iterator;
 use PublishingKit\Config\Exceptions\ConfigCouldNotBeParsed;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
@@ -15,19 +14,22 @@ use PublishingKit\Config\Contracts\ConfigContainer;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-/**
- * @psalm-immutable
- */
-class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContainer
+class Config implements ArrayAccess, Countable, Iterator, ConfigContainer
 {
     /**
      * @var array
      */
     private $config;
 
+    /**
+     * @var int
+     */
+    private $position;
+
     public function __construct(array $config)
     {
         $this->config = $config;
+        $this->position = 0;
     }
 
     public static function fromFile(string $path): ConfigContainer
@@ -164,16 +166,52 @@ class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContain
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getIterator()
-    {
-        return new ArrayIterator($this->config);
-    }
-
     public function toArray(): array
     {
         return $this->config;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function current()
+    {
+        $current = $this->config[$this->position];
+        if (is_array($current)) {
+            return new static($current);
+        }
+        return $current;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function next()
+    {
+        ++$this->position;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function key()
+    {
+        return $this->position;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function valid()
+    {
+        return isset($this->config[$this->position]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rewind()
+    {
+        $this->position = 0;
     }
 }
