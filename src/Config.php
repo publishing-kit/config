@@ -176,5 +176,6 @@ class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContain
      */
     public function getIterator()
     {
+        return new ConfigIterator($this->config);
     }
 }
