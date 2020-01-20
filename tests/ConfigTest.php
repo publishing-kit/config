@@ -193,4 +193,26 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals('baz', $item->offsetGet('bar'));
         $this->assertNull($item->offsetGet('baz'));
     }
+
+    public function testOffsetSet()
+    {
+        $item = new Config([
+            'foo' => [
+                'bar' => 'baz'
+            ],
+            'bar' => 'baz'
+        ]);
+        $this->assertNull($item->offsetSet('foo', 'bar'));
+    }
+
+    public function testOffsetUnset()
+    {
+        $item = new Config([
+            'foo' => [
+                'bar' => 'baz'
+            ],
+            'bar' => 'baz'
+        ]);
+        $this->assertNull($item->offsetUnset('foo'));
+    }
 }
