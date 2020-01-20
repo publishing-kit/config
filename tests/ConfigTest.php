@@ -36,7 +36,7 @@ class ConfigTest extends SimpleTestCase
             'foo' => 'bar'
         ];
         $item = new Config($config);
-        $this->assertInstanceOf('Iterator', $item);
+        $this->assertInstanceOf('IteratorAggregate', $item);
     }
 
     public function testGetSetValue()

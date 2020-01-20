@@ -6,7 +6,7 @@ namespace PublishingKit\Config;
 
 use Countable;
 use ArrayAccess;
-use Iterator;
+use IteratorAggregate;
 use PublishingKit\Config\Exceptions\ConfigCouldNotBeParsed;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
@@ -14,7 +14,7 @@ use PublishingKit\Config\Contracts\ConfigContainer;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-class Config implements ArrayAccess, Countable, Iterator, ConfigContainer
+class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContainer
 {
     /**
      * @var array
@@ -174,44 +174,7 @@ class Config implements ArrayAccess, Countable, Iterator, ConfigContainer
     /**
      * {@inheritDoc}
      */
-    public function current()
+    public function getIterator()
     {
-        $current = $this->config[$this->position];
-        if (is_array($current)) {
-            return new static($current);
-        }
-        return $current;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function next()
-    {
-        ++$this->position;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function key()
-    {
-        return $this->position;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function valid()
-    {
-        return isset($this->config[$this->position]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function rewind()
-    {
-        $this->position = 0;
     }
 }
