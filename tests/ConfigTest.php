@@ -215,4 +215,16 @@ class ConfigTest extends SimpleTestCase
         ]);
         $this->assertNull($item->offsetUnset('foo'));
     }
+
+    public function testSetState()
+    {
+        $config = Config::__set_state([
+            'foo' => [
+                'bar' => 'baz'
+            ],
+            'bar' => 'baz'
+        ]);
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertEquals('baz', $config->bar);
+    }
 }
