@@ -154,4 +154,18 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals('filesystem', $item->cache->driver);
         $this->assertEquals('cache/data', $item->cache->path);
     }
+
+    public function testMultipleLevelIterator()
+    {
+        $item = new Config([
+            'foo' => [
+                'bar' => 'baz'
+            ],
+            'bar' => 'baz'
+        ]);
+        $iterator = $item->getIterator();
+        $this->assertInstanceOf(Config::class, $iterator->current());
+        $iterator->next();
+        $this->assertTrue(is_scalar($iterator->current()));
+    }
 }
