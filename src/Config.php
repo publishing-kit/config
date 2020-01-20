@@ -14,6 +14,9 @@ use PublishingKit\Config\Contracts\ConfigContainer;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
+/**
+ * @psalm-immutable
+ */
 class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContainer
 {
     /**
@@ -21,15 +24,9 @@ class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContain
      */
     private $config;
 
-    /**
-     * @var int
-     */
-    private $position;
-
     public function __construct(array $config)
     {
         $this->config = $config;
-        $this->position = 0;
     }
 
     public static function fromFile(string $path): ConfigContainer
