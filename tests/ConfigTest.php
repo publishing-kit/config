@@ -168,4 +168,29 @@ class ConfigTest extends SimpleTestCase
         $iterator->next();
         $this->assertTrue(is_scalar($iterator->current()));
     }
+
+    public function testOffsetExists()
+    {
+        $item = new Config([
+            'foo' => [
+                'bar' => 'baz'
+            ],
+            'bar' => 'baz'
+        ]);
+        $this->assertTrue($item->offsetExists('foo'));
+        $this->assertFalse($item->offsetExists('baz'));
+    }
+
+    public function testOffsetGet()
+    {
+        $item = new Config([
+            'foo' => [
+                'bar' => 'baz'
+            ],
+            'bar' => 'baz'
+        ]);
+        $this->assertInstanceOf(Config::class, $item->offsetGet('foo'));
+        $this->assertEquals('baz', $item->offsetGet('bar'));
+        $this->assertNull($item->offsetGet('baz'));
+    }
 }
