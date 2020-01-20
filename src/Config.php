@@ -7,7 +7,6 @@ namespace PublishingKit\Config;
 use Countable;
 use ArrayAccess;
 use IteratorAggregate;
-use PublishingKit\Config\Exceptions\ConfigCouldNotBeParsed;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
 use PublishingKit\Config\Contracts\ConfigContainer;
@@ -70,8 +69,6 @@ class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContain
             }
         } catch (UnsupportedConfigFileType $e) {
             throw $e;
-        } catch (\Exception $e) {
-            throw new ConfigCouldNotBeParsed('File ' . $path . ' could not be parsed');
         }
         return $config;
     }
