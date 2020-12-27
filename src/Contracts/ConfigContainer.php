@@ -13,7 +13,7 @@ interface ConfigContainer extends ArrayAccess, Countable, IteratorAggregate
     public static function fromFiles(array $files): ConfigContainer;
 
     /**
-     * @return null|string|ConfigContainer
+     * @return null|scalar|ConfigContainer
      */
     public function get(string $name);
 
