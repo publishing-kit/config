@@ -17,12 +17,14 @@ use Symfony\Component\Yaml\Yaml;
 class Config implements ConfigContainer
 {
     /**
-     * @var array<array-key, scalar|array>
+     * @var array
+     * @psalm-var array<array-key, scalar|array>
      */
     private $config;
 
     /**
-     * @param array<array-key, scalar|array> $config
+     * @param array $config
+     * @psalm-param array<array-key, scalar|array> $config
      */
     public function __construct(array $config)
     {
@@ -48,7 +50,8 @@ class Config implements ConfigContainer
     }
 
     /**
-     * @param array<array-key, scalar|array> $config
+     * @param array $config
+     * @psalm-param array<array-key, scalar|array> $config
      */
     public static function __set_state(array $config): ConfigContainer
     {
@@ -56,7 +59,8 @@ class Config implements ConfigContainer
     }
 
     /**
-     * @return array<array-key, scalar|array>
+     * @return array
+     * @psalm-return array<array-key, scalar|array>
      */
     private static function getFile(string $path): array
     {
