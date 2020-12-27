@@ -8,9 +8,9 @@ use PublishingKit\Config\Config;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
 
-class ConfigTest extends SimpleTestCase
+final class ConfigTest extends SimpleTestCase
 {
-    public function testImplementsCountable()
+    public function testImplementsCountable(): void
     {
         $config = [
             'foo' => 'bar'
@@ -20,7 +20,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertCount(1, $item);
     }
 
-    public function testImplementsArrayAccess()
+    public function testImplementsArrayAccess(): void
     {
         $config = [
             'foo' => 'bar'
@@ -30,7 +30,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals('bar', $item['foo']);
     }
 
-    public function testImplementsIterator()
+    public function testImplementsIterator(): void
     {
         $config = [
             'foo' => 'bar'
@@ -39,7 +39,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertInstanceOf('IteratorAggregate', $item);
     }
 
-    public function testReturnsIterator()
+    public function testReturnsIterator(): void
     {
         $config = [
             'foo' => 'bar'
@@ -48,7 +48,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertInstanceOf('PublishingKit\Config\ConfigIterator', $item->getIterator());
     }
 
-    public function testGetSetValue()
+    public function testGetSetValue(): void
     {
         $config = [
             'foo' => 'bar'
@@ -56,14 +56,14 @@ class ConfigTest extends SimpleTestCase
         $item = new Config($config);
         $this->assertEquals('bar', $item->foo);
     }
-    
-    public function testGetUnsetValue()
+
+    public function testGetUnsetValue(): void
     {
         $item = new Config([]);
         $this->assertNull($item->foo);
     }
 
-    public function testGetArrayValue()
+    public function testGetArrayValue(): void
     {
         $config = [
             'foo' => [
@@ -75,7 +75,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals('baz', $item->foo->bar);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $config = [
             'foo' => [
@@ -87,7 +87,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals('baz', $item->get('foo')->get('bar'));
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $config = [
             'foo' => [
@@ -100,7 +100,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertFalse($item->get('foo')->has('baz'));
     }
 
-    public function testConvertToArray()
+    public function testConvertToArray(): void
     {
         $config = [
             'foo' => [
@@ -111,38 +111,38 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals($config, $item->toArray());
     }
 
-    public function testGetConfigFromNonExistentFile()
+    public function testGetConfigFromNonExistentFile(): void
     {
         $this->expectException(ConfigDoesNotExist::class);
         $item = Config::fromFile('tests/no-config.php');
     }
 
-    public function testGetConfigFromUnsupportedSource()
+    public function testGetConfigFromUnsupportedSource(): void
     {
         $this->expectException(UnsupportedConfigFileType::class);
         $item = Config::fromFile('tests/config.wibble');
     }
 
-    public function testGetConfigFromPhpFile()
+    public function testGetConfigFromPhpFile(): void
     {
         $item = Config::fromFile('tests/config.php');
         $this->assertEquals('bar', $item->foo);
     }
 
-    public function testGetConfigFromIniFile()
+    public function testGetConfigFromIniFile(): void
     {
         $item = Config::fromFile('tests/config.ini');
         $this->assertEquals('bar', $item->values->foo);
     }
 
-    public function testGetConfigFromYamlFile()
+    public function testGetConfigFromYamlFile(): void
     {
         $item = Config::fromFile('tests/config.yml');
         $this->assertEquals('filesystem', $item->cache->driver);
         $this->assertEquals('cache/data', $item->cache->path);
     }
 
-    public function testGetConfigFromMultipleFiles()
+    public function testGetConfigFromMultipleFiles(): void
     {
         $item = Config::fromFiles([
             'tests/config.yml',
@@ -155,7 +155,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertEquals('cache/data', $item->cache->path);
     }
 
-    public function testMultipleLevelIterator()
+    public function testMultipleLevelIterator(): void
     {
         $item = new Config([
             'foo' => [
@@ -169,7 +169,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertTrue(is_scalar($iterator->current()));
     }
 
-    public function testOffsetExists()
+    public function testOffsetExists(): void
     {
         $item = new Config([
             'foo' => [
@@ -181,7 +181,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertFalse($item->offsetExists('baz'));
     }
 
-    public function testOffsetGet()
+    public function testOffsetGet(): void
     {
         $item = new Config([
             'foo' => [
@@ -194,7 +194,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertNull($item->offsetGet('baz'));
     }
 
-    public function testOffsetSet()
+    public function testOffsetSet(): void
     {
         $item = new Config([
             'foo' => [
@@ -205,7 +205,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertNull($item->offsetSet('foo', 'bar'));
     }
 
-    public function testOffsetUnset()
+    public function testOffsetUnset(): void
     {
         $item = new Config([
             'foo' => [
@@ -216,7 +216,7 @@ class ConfigTest extends SimpleTestCase
         $this->assertNull($item->offsetUnset('foo'));
     }
 
-    public function testSetState()
+    public function testSetState(): void
     {
         $config = Config::__set_state([
             'foo' => [
