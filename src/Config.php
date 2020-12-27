@@ -21,6 +21,9 @@ class Config implements ConfigContainer
      */
     private $config;
 
+    /**
+     * @param array<array-key, scalar|array> $config
+     */
     public function __construct(array $config)
     {
         $this->config = $config;
@@ -44,11 +47,17 @@ class Config implements ConfigContainer
         return new static($configs);
     }
 
+    /**
+     * @param array<array-key, scalar|array> $config
+     */
     public static function __set_state(array $config): ConfigContainer
     {
         return new static($config);
     }
 
+    /**
+     * @return array<array-key, scalar|array>
+     */
     private static function getFile(string $path): array
     {
         if (!$path = realpath($path)) {
@@ -58,13 +67,16 @@ class Config implements ConfigContainer
             $ext = pathinfo($path)['extension'] ?? '';
             switch ($ext) {
                 case 'php':
+                    /** @var array<array-key, scalar|array> **/
                     $config = self::parseArrayFile($path);
                     break;
                 case 'ini':
+                    /** @var array<array-key, scalar|array> **/
                     $config = self::parseIniFile($path);
                     break;
                 case 'yml':
                 case 'yaml':
+                    /** @var array<array-key, scalar|array> **/
                     $config = self::parseYamlFile($path);
                     break;
                 default:
@@ -104,17 +116,20 @@ class Config implements ConfigContainer
 
     /**
      * @param string $name
-     * @return string|null|Config
+     *
+     * @return null|scalar|static
      */
     public function get(string $name)
     {
         if (!isset($this->config[$name])) {
             return null;
         }
-        if (is_array($this->config[$name])) {
-            return new static($this->config[$name]);
+        /** @var array|scalar **/
+        $config = $this->config[$name];
+        if (is_array($config)) {
+            return new static($config);
         }
-        return $this->config[$name];
+        return $config;
     }
 
     public function __get(string $name)
@@ -137,6 +152,7 @@ class Config implements ConfigContainer
 
     /**
      * {@inheritDoc}
+     * @psalm-param scalar $offset
      */
     public function offsetExists($offset)
     {
@@ -145,6 +161,8 @@ class Config implements ConfigContainer
 
     /**
      * {@inheritDoc}
+     * @param $offset scalar
+     * @psalm-return Config|scalar|null
      */
     public function offsetGet($offset)
     {
@@ -154,6 +172,7 @@ class Config implements ConfigContainer
         if (is_array($this->config[$offset])) {
             return new static($this->config[$offset]);
         }
+        /** @var scalar **/
         return $this->config[$offset];
     }
 
