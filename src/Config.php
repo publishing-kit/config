@@ -175,7 +175,9 @@ class Config implements ConfigContainer
             return null;
         }
         if (is_array($this->config[$offset])) {
-            return new static($this->config[$offset]);
+            /** @var array<array-key, scalar|array> **/
+            $config = $this->config[$offset];
+            return new static($config);
         }
         /** @var scalar **/
         return $this->config[$offset];

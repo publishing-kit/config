@@ -13,7 +13,7 @@ final class ConfigIterator extends ArrayIterator
      */
     public function current()
     {
-        /** @var array|scalar **/
+        /** @var array<array-key, array|scalar>|scalar **/
         $result = parent::current();
         if (is_array($result)) {
             return new Config($result);
