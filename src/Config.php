@@ -93,6 +93,7 @@ class Config implements ConfigContainer
         if (!file_exists($path)) {
             throw new ConfigDoesNotExist();
         }
+        /** @var array **/
         return include $path;
     }
 
@@ -124,7 +125,7 @@ class Config implements ConfigContainer
         if (!isset($this->config[$name])) {
             return null;
         }
-        /** @var array|scalar **/
+        /** @var array<array-key, array|scalar>|scalar **/
         $config = $this->config[$name];
         if (is_array($config)) {
             return new static($config);
