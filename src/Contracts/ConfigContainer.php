@@ -2,7 +2,11 @@
 
 namespace PublishingKit\Config\Contracts;
 
-interface ConfigContainer
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
+
+interface ConfigContainer extends ArrayAccess, Countable, IteratorAggregate
 {
     public static function fromFile(string $path): ConfigContainer;
 

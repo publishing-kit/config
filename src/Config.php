@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace PublishingKit\Config;
 
-use Countable;
-use ArrayAccess;
-use IteratorAggregate;
+use PublishingKit\Config\Contracts\ConfigContainer;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
-use PublishingKit\Config\Contracts\ConfigContainer;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @psalm-consistent-constructor
  * @psalm-immutable
  */
-class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContainer
+class Config implements ConfigContainer
 {
     /**
      * @var array
