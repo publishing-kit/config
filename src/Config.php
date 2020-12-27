@@ -51,8 +51,12 @@ class Config implements ConfigContainer
 
     private static function getFile(string $path): array
     {
+        if (!$path = realpath($path)) {
+            throw new ConfigDoesNotExist();
+        }
         try {
-            switch (pathinfo($path)['extension']) {
+            $ext = pathinfo($path)['extension'] ?? '';
+            switch ($ext) {
                 case 'php':
                     $config = self::parseArrayFile($path);
                     break;
@@ -64,7 +68,7 @@ class Config implements ConfigContainer
                     $config = self::parseYamlFile($path);
                     break;
                 default:
-                    throw new UnsupportedConfigFileType(pathinfo($path)['extension']);
+                    throw new UnsupportedConfigFileType($ext);
             }
         } catch (UnsupportedConfigFileType $e) {
             throw $e;
