@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 class Config implements ConfigContainer
 {
     /**
-     * @var array
+     * @var array<array-key, scalar|array>
      */
     private $config;
 
