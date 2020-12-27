@@ -51,9 +51,6 @@ class Config implements ConfigContainer
 
     private static function getFile(string $path): array
     {
-        if (!file_exists($path)) {
-            throw new ConfigDoesNotExist();
-        }
         try {
             switch (pathinfo($path)['extension']) {
                 case 'php':
@@ -77,16 +74,27 @@ class Config implements ConfigContainer
 
     private static function parseArrayFile(string $path): array
     {
+        if (!file_exists($path)) {
+            throw new ConfigDoesNotExist();
+        }
         return include $path;
     }
 
     private static function parseIniFile(string $path): array
     {
+        if (!file_exists($path)) {
+            throw new ConfigDoesNotExist();
+        }
+        /** @var array **/
         return parse_ini_file($path, true);
     }
 
     private static function parseYamlFile(string $path): array
     {
+        if (!file_exists($path)) {
+            throw new ConfigDoesNotExist();
+        }
+        /** @var array **/
         return Yaml::parseFile($path);
     }
 
