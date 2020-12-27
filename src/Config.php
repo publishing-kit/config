@@ -31,6 +31,9 @@ class Config implements ConfigContainer
         return new static(self::getFile($path));
     }
 
+    /**
+     * @psalm-param $files array<array-key, string> Array of file paths
+     */
     public static function fromFiles(array $files): ConfigContainer
     {
         $configs = [];
