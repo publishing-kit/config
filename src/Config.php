@@ -14,6 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
+ * @psalm-consistent-constructor
  * @psalm-immutable
  */
 class Config implements ArrayAccess, Countable, IteratorAggregate, ConfigContainer
