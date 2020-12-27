@@ -133,10 +133,22 @@ final class ConfigTest extends SimpleTestCase
         $this->assertEquals('bar', $item->foo);
     }
 
+    public function testGetConfigFromNonexistentPhpFile(): void
+    {
+        $this->expectException(ConfigDoesNotExist::class);
+        $item = $this->invokeMethod(new Config([]), 'parseArrayFile', ['path' => 'tests/bad-config.php']);
+    }
+
     public function testGetConfigFromIniFile(): void
     {
         $item = Config::fromFile('tests/config.ini');
         $this->assertEquals('bar', $item->values->foo);
+    }
+
+    public function testGetConfigFromNonexistentIniFile(): void
+    {
+        $this->expectException(ConfigDoesNotExist::class);
+        $item = $this->invokeMethod(new Config([]), 'parseIniFile', ['path' => 'tests/bad-config.ini']);
     }
 
     public function testGetConfigFromYamlFile(): void
@@ -144,6 +156,12 @@ final class ConfigTest extends SimpleTestCase
         $item = Config::fromFile('tests/config.yml');
         $this->assertEquals('filesystem', $item->cache->driver);
         $this->assertEquals('cache/data', $item->cache->path);
+    }
+
+    public function testGetConfigFromNonexistentYamlFile(): void
+    {
+        $this->expectException(ConfigDoesNotExist::class);
+        $item = $this->invokeMethod(new Config([]), 'parseYamlFile', ['path' => 'tests/bad-config.yml']);
     }
 
     public function testGetConfigFromMultipleFiles(): void
@@ -196,6 +214,18 @@ final class ConfigTest extends SimpleTestCase
         $this->assertInstanceOf(Config::class, $item->offsetGet('foo'));
         $this->assertEquals('baz', $item->offsetGet('bar'));
         $this->assertNull($item->offsetGet('baz'));
+    }
+
+    public function testOffsetGetInvalidParam(): void
+    {
+        $this->expectException(ConfigDoesNotExist::class);
+        $item = new Config([
+            'foo' => [
+                'bar' => 'baz'
+            ],
+            'bar' => 'baz'
+        ]);
+        $item->offsetGet([]);
     }
 
     public function testOffsetSet(): void
