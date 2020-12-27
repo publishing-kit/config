@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
 use PublishingKit\Config\Config;
+use PublishingKit\Config\ConfigIterator;
 use PublishingKit\Config\Exceptions\ConfigDoesNotExist;
 use PublishingKit\Config\Exceptions\UnsupportedConfigFileType;
 
@@ -16,7 +20,7 @@ final class ConfigTest extends SimpleTestCase
             'foo' => 'bar'
         ];
         $item = new Config($config);
-        $this->assertInstanceOf('Countable', $item);
+        $this->assertInstanceOf(Countable::class, $item);
         $this->assertCount(1, $item);
     }
 
@@ -26,7 +30,7 @@ final class ConfigTest extends SimpleTestCase
             'foo' => 'bar'
         ];
         $item = new Config($config);
-        $this->assertInstanceOf('ArrayAccess', $item);
+        $this->assertInstanceOf(ArrayAccess::class, $item);
         $this->assertEquals('bar', $item['foo']);
     }
 
@@ -36,7 +40,7 @@ final class ConfigTest extends SimpleTestCase
             'foo' => 'bar'
         ];
         $item = new Config($config);
-        $this->assertInstanceOf('IteratorAggregate', $item);
+        $this->assertInstanceOf(IteratorAggregate::class, $item);
     }
 
     public function testReturnsIterator(): void
@@ -45,7 +49,7 @@ final class ConfigTest extends SimpleTestCase
             'foo' => 'bar'
         ];
         $item = new Config($config);
-        $this->assertInstanceOf('PublishingKit\Config\ConfigIterator', $item->getIterator());
+        $this->assertInstanceOf(ConfigIterator::class, $item->getIterator());
     }
 
     public function testGetSetValue(): void
