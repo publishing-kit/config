@@ -37,6 +37,7 @@ class Config implements ConfigContainer
     public static function fromFiles(array $files): ConfigContainer
     {
         $configs = [];
+        /** @var string **/
         foreach ($files as $file) {
             $configs = array_merge($configs, self::getFile($file));
         }
