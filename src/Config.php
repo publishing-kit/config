@@ -167,7 +167,7 @@ class Config implements ConfigContainer
 
     /**
      * {@inheritDoc}
-     * @param array-key $offset
+     * @param mixed $offset
      * @psalm-return Config|scalar|null
      */
     public function offsetGet($offset)
