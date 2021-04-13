@@ -157,7 +157,7 @@ class Config implements ConfigContainer
 
     /**
      * {@inheritDoc}
-     * @psalm-param scalar $offset
+     * @psalm-param array-key $offset
      */
     public function offsetExists($offset)
     {
@@ -166,7 +166,7 @@ class Config implements ConfigContainer
 
     /**
      * {@inheritDoc}
-     * @param $offset scalar
+     * @param $offset array-key
      * @psalm-return Config|scalar|null
      * @psalm-assert scalar $offset
      */
