@@ -121,9 +121,14 @@ class Config implements ConfigContainer
     }
 
     /**
+     * @template T of key-of<ConfigArray>
+     *
      * @param string $name
+     * @psalm-param T $name
      *
      * @return null|scalar|static
+     *
+     * @psalm-return null|scalar|static<array<array-key, array|scalar>>
      */
     public function get(string $name)
     {
