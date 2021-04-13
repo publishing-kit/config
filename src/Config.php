@@ -166,15 +166,15 @@ class Config implements ConfigContainer
 
     /**
      * {@inheritDoc}
-     * @param $offset array-key
+     * @param array-key $offset
      * @psalm-return Config|scalar|null
-     * @psalm-assert scalar $offset
      */
     public function offsetGet($offset)
     {
         if (!is_scalar($offset)) {
             throw new ConfigDoesNotExist();
         }
+        /** @psalm-assert scalar $offset **/
         if (!isset($this->config[$offset])) {
             return null;
         }
