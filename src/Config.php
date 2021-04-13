@@ -13,18 +13,19 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * @psalm-consistent-constructor
  * @psalm-immutable
+ * @template ConfigArray as array<array-key, scalar|array>
  */
 class Config implements ConfigContainer
 {
     /**
      * @var array
-     * @psalm-var array<array-key, scalar|array>
+     * @psalm-var ConfigArray
      */
     private $config;
 
     /**
      * @param array $config
-     * @psalm-param array<array-key, scalar|array> $config
+     * @psalm-param ConfigArray $config
      */
     public function __construct(array $config)
     {
