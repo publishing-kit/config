@@ -61,7 +61,7 @@ class Config implements ConfigContainer
 
     /**
      * @return array
-     * @psalm-return array<array-key, scalar|array>
+     * @psalm-return ConfigArray
      */
     private static function getFile(string $path): array
     {
