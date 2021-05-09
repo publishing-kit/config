@@ -12,6 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * @psalm-consistent-constructor
+ * @psalm-consistent-templates
  * @psalm-immutable
  * @template ConfigArray as array<array-key, scalar|array>
  */
